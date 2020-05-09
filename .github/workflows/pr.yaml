@@ -1,0 +1,18 @@
+name: Pull Request validation
+on:
+  pull_request:
+    branches: [ master ]
+jobs:
+  linter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: python-lint
+        uses: CyberZHG/github-action-python-lint@0.0.2
+        with:
+          args: src
