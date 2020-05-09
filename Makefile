@@ -7,4 +7,5 @@ image: Dockerfile
 	docker build -t locust-newrelic-sidecar .
 
 run:
-	docker run --name locust-newrelic-sidecar locust-newrelic-sidecar
+	docker rm locust-newrelic-sidecar
+	docker run --name locust-newrelic-sidecar --env-file ./env.list locust-newrelic-sidecar
