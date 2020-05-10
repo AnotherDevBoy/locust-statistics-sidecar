@@ -28,7 +28,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
-          WITH_V: true
+          WITH_V: false
       - name: Create Release
         uses: actions/create-release@v1
         env:
@@ -50,4 +50,4 @@ jobs:
         name: albertowar/locust-newrelic-sidecar
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        tag_semver: true
+        tag_names: true
