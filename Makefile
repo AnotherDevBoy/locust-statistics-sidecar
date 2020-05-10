@@ -1,14 +1,13 @@
-.PHONY: local-run image run
+.PHONY: lint build run cleanup
 
 lint:
 	pycodestyle --ignore=E501 src
 
-local-run:
-	newrelic-admin run-program python3 src/main.py
+image: docker-compose.yml
+	docker-compose build
 
-image: Dockerfile
-	docker build -t locust-newrelic-sidecar .
+run: image
+	docker-compose up
 
-run:
-	docker rm locust-newrelic-sidecar
-	docker run --name locust-newrelic-sidecar --env-file ./env.list locust-newrelic-sidecar
+cleanup:
+	docker-compose down
