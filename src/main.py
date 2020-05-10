@@ -2,10 +2,15 @@ import asyncio
 import aiohttp
 import newrelic.agent
 import logging
+import sys
 
 from config import get_config
 
-logger = logging.getLogger('locust-newrelic-sidecar')
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+handler = logging.StreamHandler(sys.stdout)
+handler.setLevel(logging.INFO)
+logger.addHandler(handler)
 
 
 def send_stats_event(app, stats):
@@ -13,17 +18,17 @@ def send_stats_event(app, stats):
 
 
 async def get_stats(session, stats_endpoint):
-    async with session.get(stats_endpoint) as resp:
+    async with session.get(stats_endpoint, ssl=False) as resp:
         stats_body = await resp.json()
-        if stats_endpoint['state'] != 'running':
+        if stats_body['state'] != 'running':
             return None
 
         return {
-            'error_rate': stats_endpoint['fail_ratio'],
-            'latency_p50': stats_endpoint['current_response_time_percentile_50'],
-            'latency_p95': stats_endpoint['current_response_time_percentile_95'],
-            'rps': stats_endpoint['total_rps'],
-            'user_count': stats_endpoint['user_count']
+            'error_rate': stats_body['fail_ratio'],
+            'latency_p50': stats_body['current_response_time_percentile_50'],
+            'latency_p95': stats_body['current_response_time_percentile_95'],
+            'rps': stats_body['total_rps'],
+            'user_count': stats_body['user_count']
         }
 
 
@@ -31,7 +36,7 @@ async def get_stats(session, stats_endpoint):
 async def stats_publisher(stats_endpoint, interval):
     async with aiohttp.ClientSession() as session:
         while True:
-            logger.info(f'Collect statistics from Locust endpoint: ${stats_endpoint}')
+            logger.info(f'Collect statistics from Locust endpoint: {stats_endpoint}')
             stats = await get_stats(session, stats_endpoint)
 
             if stats is None:
@@ -43,6 +48,7 @@ async def stats_publisher(stats_endpoint, interval):
             await asyncio.sleep(interval)
 
 if __name__ == '__main__':
+    logger.info('Starting Locust NewRelic sidecar')
     config = get_config()
 
     if config['STATS_ENDPOINT'] is None:

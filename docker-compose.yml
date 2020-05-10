@@ -1,0 +1,24 @@
+version: '3'
+services:
+  standalone:
+    image: locustio/locust:latest
+    ports:
+     - "8089:8089"
+    container_name: standalone
+    volumes:
+      - $PWD/locustfile:/mnt/locust
+    environment:
+      - LOCUST_MODE=standalone
+      - LOCUSTFILE_PATH=/mnt/locust/locustfile.py
+      - TARGET_URL=https://www.yahoo.com
+  sidecar:
+    build:
+      context: .
+    container_name: sidecar
+    depends_on:
+      - standalone
+    environment:
+      - STATS_ENDPOINT=http://standalone:8089/stats/requests
+      - POLL_INTERVAL_SECONDS=5
+    env_file:
+    - env.list
