@@ -1,5 +1,7 @@
-name: Pull Request validation
+name: PR
 on:
+  push:
+    branchs: [ master ]
   pull_request:
     branches: [ master ]
 jobs:
