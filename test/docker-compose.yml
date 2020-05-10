@@ -11,3 +11,9 @@ services:
     - LOCUST_MODE=standalone
     - LOCUSTFILE_PATH=/mnt/locust/locustfile.py
     - TARGET_URL=https://www.yahoo.com
+  sidecar:
+    image: albertowar/locust-newrelic-sidecar
+    container_name: sidecar
+    environment:
+    - STATS_ENDPOINT=http://localhost:8089/stats/requests
+    - POLL_INTERVAL_SECONDS=5
