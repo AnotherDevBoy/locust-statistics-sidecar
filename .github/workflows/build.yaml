@@ -17,4 +17,4 @@ jobs:
       - name: python-lint
         uses: CyberZHG/github-action-python-lint@0.0.2
         with:
-          args: src
+          args: --ignore=E501 src

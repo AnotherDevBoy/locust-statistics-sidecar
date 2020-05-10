@@ -1,5 +1,8 @@
 .PHONY: local-run image run
 
+lint:
+	pycodestyle --ignore=E501 src
+
 local-run:
 	newrelic-admin run-program python3 src/main.py
 
