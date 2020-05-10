@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3-slim
 
 ENV NEW_RELIC_LICENSE_KEY=
 ENV NEW_RELIC_APP_NAME="Locust NewRelic Sidecar"
