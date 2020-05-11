@@ -2,7 +2,6 @@
 
 ![](https://github.com/albertowar/locust-newrelic-sidecar/workflows/Master%20Build/badge.svg)
 ![](https://github.com/albertowar/locust-newrelic-sidecar/workflows/PR%20Build/badge.svg)
-![](https://github.com/albertowar/locust-newrelic-sidecar/workflows/Publish/badge.svg)
 
 Sidecar to push Locust statistics to NewRelic as events.
 
