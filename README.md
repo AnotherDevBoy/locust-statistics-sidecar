@@ -1,4 +1,4 @@
-# locust-newrelic-sidecar
+# locust-statistics-sidecar
 
 ![](https://github.com/albertowar/locust-newrelic-sidecar/workflows/Master%20Build/badge.svg)
 ![](https://github.com/albertowar/locust-newrelic-sidecar/workflows/PR%20Build/badge.svg)
