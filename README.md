@@ -12,7 +12,22 @@ The minimum requirement to build and run this locally are:
 - **Optional**: pycodestyle (if you want to run the linter)
 
 ## Usage
-TBD
+In order to use the container, run:
+
+```
+docker run --env LOCUST_URL=http://<Your Locust Host>:8089 --env NEW_RELIC_LICENSE_KEY=<Your License Key> albertowar/locust-statistics-sidecar
+```
+
+The container can be configured with the following environment variables:
+
+| Environment           | Required | Default                   | Description                                                                               |
+| --------------------- | -------- | ------------------------- | ----------------------------------------------------------------------------------------- |
+| LOCUST_URL            | YES      | N/A                       | The URL of the Locust instance (when running distributed Locust, this is the master host) |
+| POLL_INTERVAL_SECONDS | NO       | 30                        | The number of seconds between the action of publishing statistics                         |
+| NEW_RELIC_LICENSE_KEY | YES      | N/A                       | The NewRelic license key used by the NewRelic agent                                       |
+| NEW_RELIC_APP_NAME    | NO       | Locust Statistics Sidecar | The NewRelic application name to use when publishing statistics                           |
+| NEW_RELIC_LOG         | NO       | `/tmp/newrelic.log`       | The path to NewRelic agent log file                                                       |
+| NEW_RELIC_LOG_LEVEL   | NO       | `info`                    | The log level for NewRelic agent                                                          |
 
 ## Development
 Once you have cloned the repository, the `Makefile` provides you with a few shortcuts to facilitate the development flow:
@@ -22,7 +37,18 @@ Once you have cloned the repository, the `Makefile` provides you with a few shor
 - `cleanup`: stops and removes the containers.
 
 ## Folder structure
-TBD
+```
+├── .github
+│   └── workflows    # CI workflows powered by GitHub Actions
+├── locustfile       # Used to test changes locally
+├── src
+├── docker-compose   # Used to test changes locally
+├── Dockerfile
+├── LICENSE
+├── Makefile         # Useful shortcuts for local development
+├── README.md        # Dpcumentation
+└── requirements.txt # Dependencies
+```
 
 ## Contribute
 TBD

@@ -17,7 +17,7 @@ services:
     depends_on:
       - standalone
     environment:
-      - STATS_ENDPOINT=http://standalone:8089/stats/requests
+      - LOCUST_URL=http://standalone:8089
       - POLL_INTERVAL_SECONDS=5
     env_file:
     - env.list

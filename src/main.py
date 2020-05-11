@@ -17,8 +17,8 @@ def send_stats_event(app, stats):
     newrelic.agent.record_custom_event('locust_statistics', stats, app)
 
 
-async def get_stats(session, stats_endpoint):
-    async with session.get(stats_endpoint, ssl=False) as resp:
+async def get_stats(session, locust_url):
+    async with session.get(f"{locust_url}/stats/requests", ssl=False) as resp:
         stats_body = await resp.json()
         if stats_body['state'] != 'running':
             return None
@@ -33,11 +33,11 @@ async def get_stats(session, stats_endpoint):
 
 
 @newrelic.agent.background_task()
-async def stats_publisher(stats_endpoint, interval):
+async def stats_publisher(locust_url, interval):
     async with aiohttp.ClientSession() as session:
         while True:
-            logger.info(f'Collect statistics from Locust endpoint: {stats_endpoint}')
-            stats = await get_stats(session, stats_endpoint)
+            logger.info(f'Collect statistics from Locust: {locust_url}')
+            stats = await get_stats(session, locust_url)
 
             if stats is None:
                 logger.info('Locust is not running. Skipping event submission.')
@@ -51,7 +51,7 @@ if __name__ == '__main__':
     logger.info('Starting Locust NewRelic sidecar')
     config = get_config()
 
-    if config['STATS_ENDPOINT'] is None:
+    if config['LOCUST_URL'] is None:
         raise RuntimeError('The stats endpoint is needed to run the sidecar')
 
-    asyncio.run(stats_publisher(config['STATS_ENDPOINT'], config['POLL_INTERVAL_SECONDS']))
+    asyncio.run(stats_publisher(config['LOCUST_URL'], config['POLL_INTERVAL_SECONDS']))

@@ -2,7 +2,7 @@ FROM python:3-slim
 
 ENV NEW_RELIC_LICENSE_KEY=
 ENV NEW_RELIC_APP_NAME="Locust NewRelic Sidecar"
-ENV NEW_RELIC_LOG=/tmp/newrelic.log
+ENV NEW_RELIC_LOG_PATH=/tmp/newrelic.log
 ENV NEW_RELIC_LOG_LEVEL=info
 
 COPY src src
