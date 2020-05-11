@@ -1,4 +1,4 @@
-name: Release
+name: Master Build
 on:
   push:
     branches: [ master ]
@@ -35,7 +35,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
-          WITH_V: false
       - name: Create Release
         uses: actions/create-release@v1
         env:
@@ -51,4 +50,4 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: albertowar/locust-newrelic-sidecar
-          tags: "latest,${{ steps.bump.outputs.new_tag }}"
+          tag_with_ref: true
