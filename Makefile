@@ -3,11 +3,11 @@
 lint:
 	pycodestyle --ignore=E501 src
 
-image: docker-compose.yml
-	docker-compose build
+image: test/docker-compose.yml
+	cd test && docker-compose build
 
 run: image
-	docker-compose up
+	cd test && docker-compose up
 
 cleanup:
-	docker-compose down
+	cd test && docker-compose down

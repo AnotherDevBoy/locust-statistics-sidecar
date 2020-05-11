@@ -13,7 +13,7 @@ services:
       - TARGET_URL=https://www.yahoo.com
   sidecar:
     build:
-      context: .
+      context: ..
     depends_on:
       - standalone
     environment:

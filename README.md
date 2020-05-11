@@ -33,25 +33,36 @@ The container can be configured with the following environment variables:
 Once you have cloned the repository, the `Makefile` provides you with a few shortcuts to facilitate the development flow:
 - `lint`: runs the linter on the `srs` folder.
 - `image`: builds the image.
-- `run`: runs the image alongside of a Locust standalone instance.
+- `run`: runs the test application (Locust with a simple test script and the sidecar).
 - `cleanup`: stops and removes the containers.
+
+In order for the test application to work properly, you will also need to create an `env.list` file under `/test` with following:
+
+```
+NEW_RELIC_LICENSE_KEY=<Your License Key>
+```
 
 ## Folder structure
 ```
 ├── .github
-│   └── workflows    # CI workflows powered by GitHub Actions
-├── locustfile       # Used to test changes locally
-├── src
-├── docker-compose   # Used to test changes locally
+│   └── workflows      # CI workflows powered by GitHub Actions
+├── test               # Used to test changes locally
+    ├── locustfile     # Locust test script
+    └── docker-compose # Used to run Locust and the sidecar together for testing purposes
+│
+├── src                # Locust Statistics Sidecar code
 ├── Dockerfile
 ├── LICENSE
-├── Makefile         # Useful shortcuts for local development
-├── README.md        # Dpcumentation
-└── requirements.txt # Dependencies
+├── Makefile           # Shortcuts for local development
+├── README.md          # Documentation
+└── requirements.txt   # Dependencies
 ```
 
 ## Contribute
-TBD
+1. Fork the repository.
+2. Send a PR to `master` branch.
+3. Make sure that all validation steps are passing.
+4. Wait for one of the maintainers (only me for now) to review and merge.
 
 ## FAQ
 ### Why did I create this tool?
