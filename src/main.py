@@ -13,8 +13,13 @@ handler.setLevel(logging.INFO)
 logger.addHandler(handler)
 
 
-def send_stats_event(app, stats):
-    newrelic.agent.record_custom_event('locust_statistics', stats, app)
+def send_summary_event(app, stats):
+    newrelic.agent.record_custom_event('locust_summary', stats, app)
+
+
+def send_request_statistics(app, req_stats):
+    for stats in req_stats:
+        newrelic.agent.record_custom_event('locust_request_statistics', stats, app)
 
 
 async def get_stats(session, locust_url):
@@ -23,13 +28,34 @@ async def get_stats(session, locust_url):
         if stats_body['state'] != 'running':
             return None
 
-        return {
+        summary = {
             'error_rate': stats_body['fail_ratio'],
             'latency_p50': stats_body['current_response_time_percentile_50'],
             'latency_p95': stats_body['current_response_time_percentile_95'],
             'rps': stats_body['total_rps'],
             'user_count': stats_body['user_count']
         }
+
+        request_stats = []
+
+        for stats in stats_body['stats']:
+            request_stats.append({
+                "avg_content_length": stats["avg_content_length"],
+                "avg_response_time": stats["avg_response_time"],
+                "current_fail_per_sec": stats["current_fail_per_sec"],
+                "current_rps": stats["current_rps"],
+                "max_response_time": stats["max_response_time"],
+                "median_response_time": stats["median_response_time"],
+                "method": stats["method"],
+                "min_response_time": stats["min_response_time"],
+                "name": stats["name"],
+                "ninetieth_response_time": stats["ninetieth_response_time"],
+                "num_failures": stats["num_failures"],
+                "num_requests": stats["num_requests"],
+                "safe_name": stats["safe_name"]
+            })
+
+        return (summary, request_stats)
 
 
 @newrelic.agent.background_task()
@@ -43,7 +69,8 @@ async def stats_publisher(locust_url, interval):
                 logger.info('Locust is not running. Skipping event submission.')
             else:
                 logger.info('Sending event to NewRelic')
-                send_stats_event(newrelic.agent.application(), stats)
+                send_summary_event(newrelic.agent.application(), stats[0])
+                send_request_statistics(newrelic.agent.application(), stats[1])
 
             await asyncio.sleep(interval)
 
