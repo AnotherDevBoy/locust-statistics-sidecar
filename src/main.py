@@ -14,12 +14,12 @@ logger.addHandler(handler)
 
 
 def send_summary_event(app, stats):
-    newrelic.agent.record_custom_event('locust_summary', stats, app)
+    newrelic.agent.record_custom_event('LocustSummary', stats, app)
 
 
 def send_request_statistics(app, req_stats):
     for stats in req_stats:
-        newrelic.agent.record_custom_event('locust_request_statistics', stats, app)
+        newrelic.agent.record_custom_event('LocustRequestStatistics', stats, app)
 
 
 async def get_stats(session, locust_url):
