@@ -1,7 +1,7 @@
-# locust-newrelic-sidecar
-![](https://github.com/albertowar/locust-newrelic-sidecar/workflows/Release/badge.svg)
-![](https://github.com/albertowar/locust-newrelic-sidecar/workflows/Master%20Build/badge.svg)
-![](https://github.com/albertowar/locust-newrelic-sidecar/workflows/PR%20Build/badge.svg)
+# locust-statistics-sidecar
+![](https://github.com/albertowar/locust-statistics-sidecar/workflows/Release/badge.svg)
+![](https://github.com/albertowar/locust-statistics-sidecar/workflows/Master%20Build/badge.svg)
+![](https://github.com/albertowar/locust-statistics-sidecar/workflows/PR%20Build/badge.svg)
 
 Sidecar to push Locust statistics to NewRelic as events.
 
@@ -63,6 +63,13 @@ NEW_RELIC_LICENSE_KEY=<Your License Key>
 2. Send a PR to `master` branch.
 3. Make sure that all validation steps are passing.
 4. Wait for one of the maintainers (only me for now) to review and merge.
+
+## Release
+In order to release a new image of Locust Statistics Sidecar, you should:
+1. Open a PR from `master` to `release` branch.
+2. Get it reviewed by one of the maintainers.
+3. Squash + Merge the PR.
+4. Make sure the release notes are relevant.
 
 ## FAQ
 ### Why did I create this tool?

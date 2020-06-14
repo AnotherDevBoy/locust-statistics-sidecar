@@ -6,11 +6,8 @@ services:
      - "8089:8089"
     container_name: standalone
     volumes:
-      - $PWD/locustfile:/mnt/locust
-    environment:
-      - LOCUST_MODE=standalone
-      - LOCUSTFILE_PATH=/mnt/locust/locustfile.py
-      - TARGET_URL=https://www.yahoo.com
+      - ./locustfile:/mnt/locust
+    command: -f /mnt/locust/locustfile.py -H https://httpbin.org
   sidecar:
     build:
       context: ..
