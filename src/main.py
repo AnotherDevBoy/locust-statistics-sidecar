@@ -66,9 +66,9 @@ async def stats_publisher(locust_url, interval):
             stats = await get_stats(session, locust_url)
 
             if stats is None:
-                logger.info("Locust is not running. Skipping event submission.")
+                logger.debug("Locust is not running. Skipping event submission.")
             else:
-                logger.info("Sending event to NewRelic")
+                logger.debug("Sending event to NewRelic")
                 send_summary_event(newrelic.agent.application(), stats[0])
                 send_request_statistics(newrelic.agent.application(), stats[1])
 
