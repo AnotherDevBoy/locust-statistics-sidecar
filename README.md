@@ -20,10 +20,10 @@ Sidecar to push Locust statistics to NewRelic as events.
 | Latency Per Endpoint    | `SELECT average(avg_response_time), average(max_response_time), average(min_response_time), average(ninetieth_response_time), average(median_response_time) FROM LocustRequestStatistics WHERE appName = 'Locust NewRelic Sidecar' and name != 'Aggregated' FACET method, name TIMESERIES AUTO`    |
 
 ## Supported Locust versions
-| Locust version | Sidecard Version |
-| -------------- | ---------------- |
-| 0.0.14         | 0.0.2            |
-| 1.0.3          | 1.0.0            |
+| Locust version | Sidecar Version |
+| -------------- | --------------- |
+| 0.0.14         | 0.0.2           |
+| 1.0.3          | 1.0.0           |
 
 ## Requirements
 The minimum requirement to build and run this locally are:
