@@ -1,9 +1,29 @@
-# locust-newrelic-sidecar
-![](https://github.com/albertowar/locust-newrelic-sidecar/workflows/Release/badge.svg)
-![](https://github.com/albertowar/locust-newrelic-sidecar/workflows/Master%20Build/badge.svg)
-![](https://github.com/albertowar/locust-newrelic-sidecar/workflows/PR%20Build/badge.svg)
+# locust-statistics-sidecar
+![](https://github.com/albertowar/locust-statistics-sidecar/workflows/Release/badge.svg)
+![](https://github.com/albertowar/locust-statistics-sidecar/workflows/Master%20Build/badge.svg)
+![](https://github.com/albertowar/locust-statistics-sidecar/workflows/PR%20Build/badge.svg)
 
 Sidecar to push Locust statistics to NewRelic as events.
+
+## Dasboard
+![Dashboard](dashboard.png)
+
+### NRQL charts
+| Name                    | Query                                                                                                                             |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Summary Error Rate      | `SELECT average(100*error_rate) FROM LocustSummary WHERE appName = 'Locust NewRelic Sidecar' TIMESERIES AUTO`                     |
+| Summary RPS             | `SELECT average(rps) from LocustSummary WHERE appName = 'Locust NewRelic Sidecar' TIMESERIES AUTO`                                |
+| Summary Latency         | `SELECT average(latency_p50), average(latency_p95) from LocustSummary WHERE appName = 'Locust NewRelic Sidecar' TIMESERIES AUTO`  |
+| User Count              | `SELECT average(user_count) from LocustSummary WHERE appName = 'Locust NewRelic Sidecar' TIMESERIES AUTO`                         |
+| Error Rate Per Endpoint | `SELECT average(current_fail_per_sec) FROM LocustRequestStatistics WHERE appName = 'Locust NewRelic Sidecar' and name != 'Aggregated' FACET method, name TIMESERIES AUTO` |
+| RPS Per Endpoint        | `SELECT average(current_rps) FROM LocustRequestStatistics WHERE appName = 'Locust NewRelic Sidecar' and name != 'Aggregated' FACET method, name TIMESERIES AUTO` |
+| Latency Per Endpoint    | `SELECT average(avg_response_time), average(max_response_time), average(min_response_time), average(ninetieth_response_time), average(median_response_time) FROM LocustRequestStatistics WHERE appName = 'Locust NewRelic Sidecar' and name != 'Aggregated' FACET method, name TIMESERIES AUTO`    |
+
+## Supported Locust versions
+| Locust version | Sidecard Version |
+| -------------- | ---------------- |
+| 0.0.14         | 0.0.2            |
+| 1.0.3          | 1.0.0            |
 
 ## Requirements
 The minimum requirement to build and run this locally are:
@@ -63,6 +83,13 @@ NEW_RELIC_LICENSE_KEY=<Your License Key>
 2. Send a PR to `master` branch.
 3. Make sure that all validation steps are passing.
 4. Wait for one of the maintainers (only me for now) to review and merge.
+
+## Release
+In order to release a new image of Locust Statistics Sidecar, you should:
+1. Open a PR from `master` to `release` branch.
+2. Get it reviewed by one of the maintainers.
+3. Squash + Merge the PR.
+4. Make sure the release notes are relevant.
 
 ## FAQ
 ### Why did I create this tool?

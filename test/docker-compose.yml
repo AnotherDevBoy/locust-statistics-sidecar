@@ -1,29 +1,27 @@
 version: '3.4'
 services:
   standalone:
-    image: locustio/locust:latest
+    image: locustio/locust:1.0.3
     ports:
      - "8089:8089"
     container_name: standalone
     volumes:
-      - $PWD/locustfile:/mnt/locust
+      - ./locustfile:/mnt/locust
     environment:
-      - LOCUST_MODE=standalone
-      - LOCUSTFILE_PATH=/mnt/locust/locustfile.py
-      - TARGET_URL=https://www.yahoo.com
+      - LOCUST_LOCUSTFILE=/mnt/locust/locustfile.py
+      - LOCUST_HOST=https://httpbin.org
+  start_dependencies:
+    image: dadarek/wait-for-dependencies
+    depends_on:
+      - standalone
+    command: standalone:8089
   sidecar:
     build:
       context: ..
     depends_on:
-      - standalone
+      - start_dependencies
     environment:
       - LOCUST_URL=http://standalone:8089
       - POLL_INTERVAL_SECONDS=5
     env_file:
     - env.list
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://standalone:8089"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
