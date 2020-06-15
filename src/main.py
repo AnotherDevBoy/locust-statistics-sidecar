@@ -62,7 +62,7 @@ async def get_stats(session, locust_url):
 async def stats_publisher(locust_url, interval):
     async with aiohttp.ClientSession() as session:
         while True:
-            logger.info(f"Collect statistics from Locust: {locust_url}")
+            logger.debug(f"Collect statistics from Locust: {locust_url}")
             stats = await get_stats(session, locust_url)
 
             if stats is None:
