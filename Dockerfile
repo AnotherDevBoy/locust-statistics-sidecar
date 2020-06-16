@@ -1,5 +1,7 @@
 FROM python:3-slim
 
+WORKDIR /sidecar
+
 ENV NEW_RELIC_LICENSE_KEY=
 ENV NEW_RELIC_APP_NAME="Locust NewRelic Sidecar"
 ENV NEW_RELIC_LOG_PATH=/tmp/newrelic.log
