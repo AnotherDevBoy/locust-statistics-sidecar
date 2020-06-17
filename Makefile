@@ -1,7 +1,7 @@
 .PHONY: lint build run cleanup
 
 lint:
-	pycodestyle --ignore=E501 src
+	pycodestyle --ignore=E501,E722 src
 
 test-image: test/docker-compose.yml
 	cd test && docker-compose build
