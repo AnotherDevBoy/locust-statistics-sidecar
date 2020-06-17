@@ -10,16 +10,11 @@ services:
     environment:
       - LOCUST_LOCUSTFILE=/mnt/locust/locustfile.py
       - LOCUST_HOST=https://httpbin.org
-  start_dependencies:
-    image: dadarek/wait-for-dependencies
-    depends_on:
-      - standalone
-    command: standalone:8089
   sidecar:
     build:
       context: ..
     depends_on:
-      - start_dependencies
+      - standalone
     environment:
       - LOCUST_URL=http://standalone:8089
       - POLL_INTERVAL_SECONDS=5

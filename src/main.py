@@ -58,21 +58,29 @@ async def get_stats(session, locust_url):
         return (summary, request_stats)
 
 
+async def publish_stats(locust_url):
+    async with aiohttp.ClientSession() as session:
+        logger.debug(f"Collect statistics from Locust: {locust_url}")
+        stats = await get_stats(session, locust_url)
+
+        if stats is None:
+            logger.debug("Locust is not running. Skipping event submission.")
+        else:
+            logger.debug("Sending event to NewRelic")
+            send_summary_event(newrelic.agent.application(), stats[0])
+            send_request_statistics(newrelic.agent.application(), stats[1])
+
+
 @newrelic.agent.background_task()
 async def stats_publisher(locust_url, interval):
-    async with aiohttp.ClientSession() as session:
-        while True:
-            logger.debug(f"Collect statistics from Locust: {locust_url}")
-            stats = await get_stats(session, locust_url)
+    while True:
+        try:
+            await publish_stats(locust_url)
+        except:
+            logger.exception("Error while fetching statistics from Locust. Will try again later")
 
-            if stats is None:
-                logger.debug("Locust is not running. Skipping event submission.")
-            else:
-                logger.debug("Sending event to NewRelic")
-                send_summary_event(newrelic.agent.application(), stats[0])
-                send_request_statistics(newrelic.agent.application(), stats[1])
+        await asyncio.sleep(interval)
 
-            await asyncio.sleep(interval)
 
 if __name__ == "__main__":
     logger.info("Starting Locust NewRelic sidecar")

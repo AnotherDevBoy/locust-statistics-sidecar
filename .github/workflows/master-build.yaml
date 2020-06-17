@@ -15,7 +15,7 @@ jobs:
       - name: python-lint
         uses: CyberZHG/github-action-python-lint@0.0.2
         with:
-          args: --ignore=E501 src
+          args: --ignore=E501,E722 src
       - name: Build container
         uses: docker/build-push-action@v1
         with:
