@@ -17,6 +17,6 @@ services:
       - standalone
     environment:
       - LOCUST_URL=http://standalone:8089
-      - POLL_INTERVAL_SECONDS=5
+      - POLL_INTERVAL_SECONDS=10
     env_file:
     - env.list

@@ -30,8 +30,8 @@ async def get_stats(session, locust_url):
 
         summary = {
             "error_rate": stats_body["fail_ratio"],
-            "latency_p50": stats_body["current_response_time_percentile_50"],
-            "latency_p95": stats_body["current_response_time_percentile_95"],
+            "latency_p50": stats_body["current_response_time_percentile_1"],
+            "latency_p95": stats_body["current_response_time_percentile_2"],
             "rps": stats_body["total_rps"],
             "user_count": stats_body["user_count"]
         }
